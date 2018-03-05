@@ -1,0 +1,304 @@
+{
+    "links": {
+        "next": {
+            "href": "https://familysearch.org/platform/tree/persons/KWZG-519/memories?start=5&type=Story"
+        },
+        "last": {
+            "href": "https://familysearch.org/platform/tree/persons/KWZG-519/memories?start=5&type=Story"
+        },
+        "person": {
+            "href": "https://familysearch.org/platform/tree/persons/KWZG-519"
+        },
+        "self": {
+            "href": "https://familysearch.org/platform/tree/persons/KWZG-519/memories?type=Story"
+        }
+    },
+    "persons": [],
+    "sourceDescriptions": [
+        {
+            "id": "7535873",
+            "mediaType": "text/plain",
+            "about": "https://www.familysearch.org/patron/v2/TH-303-46704-384-34/dist.txt?ctx=ArtCtxPublic",
+            "attribution": {
+                "contributor": {
+                    "resource": "https://familysearch.org/platform/users/agents/cis.user.MMMM-CR2J",
+                    "resourceId": "cis.user.MMMM-CR2J"
+                }
+            },
+            "resourceType": "http://gedcomx.org/DigitalArtifact",
+            "created": 1401583854000,
+            "links": {
+                "artifact": {
+                    "href": "https://familysearch.org/platform/memories/memories/7535873/artifacts/0"
+                },
+                "coverage": {
+                    "href": "https://familysearch.org/platform/memories/memories/7535873/artifacts/0/coverage"
+                },
+                "persons": {
+                    "href": "https://familysearch.org/platform/memories/memories/7535873/personas"
+                },
+                "comments": {
+                    "href": "https://familysearch.org/platform/memories/memories/7535873/comments"
+                },
+                "memory": {
+                    "href": "https://familysearch.org/platform/memories/memories/7535873"
+                },
+                "alternate": [
+                    {
+                        "href": "https://familysearch.org/photos/artifacts/7535873"
+                    }
+                ]
+            },
+            "titles": [
+                {
+                    "value": "Rescuing the Cold Indian"
+                }
+            ],
+            "descriptions": [
+                {
+                    "value": "By: Merrill Heber Kunz\r\n\tOne night I was plumbing with Dad. It was the winter, maybe January or February, and it was cold outside. The sun went down early like 5 or 6 p.m. Dad saw this guy shivering i"
+                }
+            ],
+            "artifactMetadata": [
+                {
+                    "filename": "story.txt",
+                    "size": 1163,
+                    "screeningState": "http://gedcomx.org/Approved",
+                    "qualifiers": [
+                        {
+                            "name": "http://familysearch.org/v1/Story"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "7536181",
+            "mediaType": "text/plain",
+            "about": "https://www.familysearch.org/patron/v2/TH-300-46705-76-24/dist.txt?ctx=ArtCtxPublic",
+            "attribution": {
+                "contributor": {
+                    "resource": "https://familysearch.org/platform/users/agents/cis.user.MMMM-CR2J",
+                    "resourceId": "cis.user.MMMM-CR2J"
+                }
+            },
+            "resourceType": "http://gedcomx.org/DigitalArtifact",
+            "created": 1401584888000,
+            "links": {
+                "artifact": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536181/artifacts/0"
+                },
+                "coverage": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536181/artifacts/0/coverage"
+                },
+                "persons": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536181/personas"
+                },
+                "comments": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536181/comments"
+                },
+                "memory": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536181"
+                },
+                "alternate": [
+                    {
+                        "href": "https://familysearch.org/photos/artifacts/7536181"
+                    }
+                ]
+            },
+            "titles": [
+                {
+                    "value": "Learning to Drive"
+                }
+            ],
+            "descriptions": [
+                {
+                    "value": "By: Carma Kunz Miller\r\nDad really wanted us kids to learn how to drive. So he had this car. He got a new car and he told Nathan and I that he was gonna fill it with gas and we could learn how to drive"
+                }
+            ],
+            "artifactMetadata": [
+                {
+                    "filename": "story.txt",
+                    "size": 2716,
+                    "screeningState": "http://gedcomx.org/Approved",
+                    "qualifiers": [
+                        {
+                            "name": "http://familysearch.org/v1/Story"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "7536336",
+            "mediaType": "text/plain",
+            "about": "https://www.familysearch.org/patron/v2/TH-303-46705-122-19/dist.txt?ctx=ArtCtxPublic",
+            "attribution": {
+                "contributor": {
+                    "resource": "https://familysearch.org/platform/users/agents/cis.user.MMMM-CR2J",
+                    "resourceId": "cis.user.MMMM-CR2J"
+                }
+            },
+            "resourceType": "http://gedcomx.org/DigitalArtifact",
+            "created": 1401585442000,
+            "links": {
+                "artifact": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536336/artifacts/0"
+                },
+                "coverage": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536336/artifacts/0/coverage"
+                },
+                "persons": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536336/personas"
+                },
+                "comments": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536336/comments"
+                },
+                "memory": {
+                    "href": "https://familysearch.org/platform/memories/memories/7536336"
+                },
+                "alternate": [
+                    {
+                        "href": "https://familysearch.org/photos/artifacts/7536336"
+                    }
+                ]
+            },
+            "titles": [
+                {
+                    "value": "Friday Nights"
+                }
+            ],
+            "descriptions": [
+                {
+                    "value": "By: Beth Kunz Coleman\r\n\tOne of the things I remember is when we were little kids there was an elementary school that was across the valley in Georgetown. On Friday nights they had roller skating. So m"
+                }
+            ],
+            "artifactMetadata": [
+                {
+                    "filename": "story.txt",
+                    "size": 1324,
+                    "screeningState": "http://gedcomx.org/Approved",
+                    "qualifiers": [
+                        {
+                            "name": "http://familysearch.org/v1/Story"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "7537026",
+            "mediaType": "text/plain",
+            "about": "https://www.familysearch.org/patron/v2/TH-300-46706-40-28/dist.txt?ctx=ArtCtxPublic",
+            "attribution": {
+                "contributor": {
+                    "resource": "https://familysearch.org/platform/users/agents/cis.user.MMMM-CR2J",
+                    "resourceId": "cis.user.MMMM-CR2J"
+                }
+            },
+            "resourceType": "http://gedcomx.org/DigitalArtifact",
+            "created": 1401588355000,
+            "links": {
+                "artifact": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537026/artifacts/0"
+                },
+                "coverage": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537026/artifacts/0/coverage"
+                },
+                "persons": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537026/personas"
+                },
+                "comments": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537026/comments"
+                },
+                "memory": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537026"
+                },
+                "alternate": [
+                    {
+                        "href": "https://familysearch.org/photos/artifacts/7537026"
+                    }
+                ]
+            },
+            "titles": [
+                {
+                    "value": "Character Sketch"
+                }
+            ],
+            "descriptions": [
+                {
+                    "value": "By: Nathan Kunz\r\n\tHe was the type of person that was really mellow on certain things, but got real uptight about other things. It was kind of wired backwards. The type of things that other kids would "
+                }
+            ],
+            "artifactMetadata": [
+                {
+                    "filename": "story.txt",
+                    "size": 3203,
+                    "screeningState": "http://gedcomx.org/Approved",
+                    "qualifiers": [
+                        {
+                            "name": "http://familysearch.org/v1/Story"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "7537562",
+            "mediaType": "text/plain",
+            "about": "https://www.familysearch.org/patron/v2/TH-303-46706-297-42/dist.txt?ctx=ArtCtxPublic",
+            "attribution": {
+                "contributor": {
+                    "resource": "https://familysearch.org/platform/users/agents/cis.user.MMMM-CR2J",
+                    "resourceId": "cis.user.MMMM-CR2J"
+                }
+            },
+            "resourceType": "http://gedcomx.org/DigitalArtifact",
+            "created": 1401590577000,
+            "links": {
+                "artifact": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537562/artifacts/0"
+                },
+                "coverage": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537562/artifacts/0/coverage"
+                },
+                "persons": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537562/personas"
+                },
+                "comments": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537562/comments"
+                },
+                "memory": {
+                    "href": "https://familysearch.org/platform/memories/memories/7537562"
+                },
+                "alternate": [
+                    {
+                        "href": "https://familysearch.org/photos/artifacts/7537562"
+                    }
+                ]
+            },
+            "titles": [
+                {
+                    "value": "Coming Home"
+                }
+            ],
+            "descriptions": [
+                {
+                    "value": "By: Opal Fern Hart Kunz\r\nAfter we first got married and got into that one little old house that was on the land that he had there in Wardboro, it was quite a thing. It looked like it was going to fall"
+                }
+            ],
+            "artifactMetadata": [
+                {
+                    "filename": "story.txt",
+                    "size": 1163,
+                    "screeningState": "http://gedcomx.org/Approved",
+                    "qualifiers": [
+                        {
+                            "name": "http://familysearch.org/v1/Story"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
