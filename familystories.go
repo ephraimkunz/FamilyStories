@@ -226,9 +226,11 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	speech := wrapStoryWithContext(person, story)
-	resp := dialogflow.NewSSMLResponse(speech, speech, false)
+	readableSpeech := wrapStoryWithContext(person, story)
+	displaySpeech := fmt.Sprintf("Listen to the story about %s or read it here: %s", person.Name, person.Stories[0])
+	resp := dialogflow.NewSSMLResponse(readableSpeech, displaySpeech, false)
 	data, _ := resp.ToJSON()
+	log.Infof(ctx, "Returned to client: %s", string(data))
 	w.Write(data)
 	return
 }
