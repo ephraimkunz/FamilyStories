@@ -9,6 +9,8 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"net/http/httputil"
+	"strings"
 	"time"
 
 	"github.com/ephraimkunz/dialogflow"
@@ -17,7 +19,86 @@ import (
 	"google.golang.org/appengine/urlfetch"
 )
 
-const baseUrl = "https://api-integ.familysearch.org/platform"
+const (
+	// Required in json response
+	AlexaVersion = "1.0"
+
+	// Alexa intent types
+	AlexaIntentTypeIntent       = "IntentRequest"
+	AlexaIntentTypeLaunch       = "LaunchRequest"
+	AlexaIntentTypeSessionEnded = "SessionEndedRequest"
+
+	// Force a link account card to appear in the Alexa app
+	AlexaCardTypeLink = "LinkAccount"
+
+	// Story intents
+	RandomStoryIntent = "random_story"
+
+	// Alexa built-in intents we must handle
+	AlexaHelpIntent   = "AMAZON.HelpIntent"
+	AlexaCancelIntent = "AMAZON.CancelIntent"
+	AlexaStopIntent   = "AMAZON.StopIntent"
+
+	// SSML speech constants
+	HelpText         = "<speak>Ask to hear a family story.</speak>"
+	WelcomeText      = "<speak>Welcome to Family Stories! Ask to hear a family story.</speak>"
+	AuthRequiredText = "<speak>This task requires linking your FamilySearch account to this skill.</speak>"
+
+	baseUrl = "https://api-integ.familysearch.org/platform"
+)
+
+type AlexaRequest struct {
+	Session AlexaSession        `json:"session,omitempty"`
+	Request AlexaRequestDetails `json:"request,omitempty"`
+}
+
+type AlexaRequestDetails struct {
+	Type   string      `json:"type,omitempty"`
+	Intent AlexaIntent `json:"intent,omitempty"`
+}
+
+type AlexaIntent struct {
+	Name  string     `json:"name,omitempty"`
+	Slots AlexaSlots `json:"slots,omitempty"`
+}
+
+type AlexaSlots struct {
+	Number AlexaSlot `json:"number,omitempty"`
+	Lang   AlexaSlot `json:"lang,omitempty"`
+}
+
+type AlexaSlot struct {
+	Name  string `json:"name,omitempty"`
+	Value string `json:"value,omitempty"`
+}
+
+type AlexaSession struct {
+	User AlexaUser `json:"user,omitempty"`
+}
+
+type AlexaUser struct {
+	AccessToken string `json:"accessToken,omitempty"`
+}
+
+type AlexaResponse struct {
+	Version  string               `json:"version,omitempty"`
+	Response AlexaResponseDetails `json:"response,omitempty"`
+}
+
+type AlexaResponseDetails struct {
+	OutputSpeech     AlexaOutputSpeech `json:"outputSpeech,omitempty"`
+	Card             *AlexaCard        `json:"card,omitempty"` // Pointer here to omit "card:{}" when empty struct
+	ShouldEndSession bool              `json:"shouldEndSession"`
+}
+
+type AlexaCard struct {
+	Type string `json:"type,omitempty"`
+}
+
+type AlexaOutputSpeech struct {
+	Type string `json:"type"`
+	SSML string `json:"ssml"`
+}
 
 type Person struct {
 	Name    string   `json:"name,omitempty"`
@@ -31,6 +112,7 @@ var (
 
 func init() {
 	http.HandleFunc("/familystories", rootHandler)
+	http.HandleFunc("/familystoriesalexa", alexaHandler)
 }
 
 func ancestorRequest(token, personId string) *http.Request {
@@ -182,6 +264,110 @@ func getStoriesFromJSON(bytes []byte) []string {
 	return results
 }
 
+func debug(ctx context.Context, data []byte, err error) {
+	if err == nil {
+		log.Debugf(ctx, "Request", string(data))
+	} else {
+		log.Debugf(ctx, err.Error())
+	}
+}
+
+func NewAlexaResponse(ssml string) AlexaResponse {
+	ar := AlexaResponse{}
+	ar.Version = AlexaVersion
+	ar.Response.OutputSpeech.Type = "SSML"
+	ar.Response.OutputSpeech.SSML = ssml
+	ar.Response.ShouldEndSession = true
+	return ar
+}
+
+func alexaHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := appengine.NewContext(r)
+	success := validateRequest(ctx, w, r)
+	if !success {
+		return
+	}
+
+	b, err := httputil.DumpRequest(r, true)
+	debug(ctx, b, err)
+
+	decoder := json.NewDecoder(r.Body)
+	alexaReq := &AlexaRequest{}
+	err = decoder.Decode(alexaReq)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	// This is how Alexa handles the "welcome" intent
+	if alexaReq.Request.Type == AlexaIntentTypeLaunch {
+		resp := NewAlexaResponse(WelcomeText)
+		resp.Response.ShouldEndSession = false
+		jsonResp, err := json.Marshal(resp)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(jsonResp)
+		return
+	}
+
+	// Make sure that access_token is valid if invoking an intent requiring an access token
+	if alexaReq.Session.User.AccessToken == "" && alexaReq.Request.Intent.Name == RandomStoryIntent {
+		resp := NewAlexaResponse(AuthRequiredText)
+		card := AlexaCard{AlexaCardTypeLink}
+		resp.Response.Card = &card
+		jsonResp, err := json.Marshal(resp)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(jsonResp)
+		return
+	}
+
+	var resp string
+
+	switch alexaReq.Request.Intent.Name {
+	case RandomStoryIntent:
+		person, story, err := getStory(ctx, alexaReq.Session.User.AccessToken)
+		if err != nil {
+			resp = "Error getting the person"
+		} else {
+			resp = wrapStoryWithContext(person, story)
+		}
+	case AlexaHelpIntent:
+		resp = HelpText
+	case AlexaCancelIntent, AlexaStopIntent:
+		resp = "" // Just stop whatever is going on
+	default:
+		http.Error(w, "Incorrect fullfillment action", http.StatusInternalServerError)
+		return
+	}
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	str := "<speak>" + resp + "</speak>"
+	str = strings.Replace(str, "&", "and", -1) // Alexa won't read ssml with '&' in it
+
+	alexaResp := NewAlexaResponse(str)
+	if alexaReq.Request.Intent.Name == AlexaHelpIntent {
+		alexaResp.Response.ShouldEndSession = false // Session does not end on Launch intent or Help intent
+	}
+
+	byteResp, err := json.Marshal(alexaResp)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Write(byteResp)
+}
+
 func rootHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 
@@ -232,7 +418,6 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 	data, _ := resp.ToJSON()
 	log.Infof(ctx, "Returned to client: %s", string(data))
 	w.Write(data)
-	return
 }
 
 func wrapStoryWithContext(p *Person, story string) string {
