@@ -21,6 +21,8 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/appengine/urlfetch"
+
 	"google.golang.org/appengine/log"
 )
 
@@ -34,14 +36,14 @@ func HTTPError(ctx context.Context, w http.ResponseWriter, logMsg string, err st
 
 // Run all mandatory Amazon security checks on the request.
 func validateRequest(ctx context.Context, w http.ResponseWriter, r *http.Request) bool {
-	// // Check for debug bypass flag
-	// devFlag := r.URL.Query().Get("_dev")
+	// Check for debug bypass flag
+	devFlag := r.URL.Query().Get("_dev")
 
-	// isDev := devFlag != ""
+	isDev := devFlag != ""
 
-	// if !isDev {
-	// 	return IsValidAlexaRequest(ctx, w, r)
-	// }
+	if !isDev {
+		return IsValidAlexaRequest(ctx, w, r)
+	}
 
 	return true
 }
@@ -61,7 +63,7 @@ func IsValidAlexaRequest(ctx context.Context, w http.ResponseWriter, r *http.Req
 	}
 
 	// Fetch certificate data
-	certContents, err := readCert(certURL)
+	certContents, err := readCert(ctx, certURL)
 	if err != nil {
 		HTTPError(ctx, w, err.Error(), "Not Authorized", 401)
 		return false
@@ -122,15 +124,16 @@ func IsValidAlexaRequest(ctx context.Context, w http.ResponseWriter, r *http.Req
 	return true
 }
 
-func readCert(certURL string) ([]byte, error) {
-	cert, err := http.Get(certURL)
+func readCert(ctx context.Context, certURL string) ([]byte, error) {
+	client := urlfetch.Client(ctx)
+	cert, err := client.Get(certURL)
 	if err != nil {
-		return nil, errors.New("could not download Amazon cert file")
+		return nil, errors.New("could not download Amazon cert file: " + certURL)
 	}
 	defer cert.Body.Close()
 	certContents, err := ioutil.ReadAll(cert.Body)
 	if err != nil {
-		return nil, errors.New("could not read Amazon cert file")
+		return nil, errors.New("could not read Amazon cert file: " + certURL)
 	}
 
 	return certContents, nil
